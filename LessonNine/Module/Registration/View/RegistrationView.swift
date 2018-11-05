@@ -14,6 +14,11 @@ protocol RegistrationViewInput: class {
     var action: (() -> Void)? { get set }
 }
 
+extension FloatingPoint {
+    var degreesToRadians: Self { return self * .pi / 180 }
+    var radiansToDegrees: Self { return self * 180 / .pi }
+}
+
 final class RegistrationView: UIView {
     
     @IBOutlet weak var nickname: UITextField!
@@ -27,6 +32,22 @@ final class RegistrationView: UIView {
     // MARK: - Actions
     @IBAction func signupDidTap(_ sender: Any) {
         action?()
+        rotate()
+    }
+    
+    private func rotate() {
+        UIView.animate(withDuration: 0.2, delay: 1.0, options: [.autoreverse], animations: {
+//            self.nickname.transform = CGAffineTransform(rotationAngle: CGFloat(180).degreesToRadians)
+//                .scaledBy(x: 2.0, y: 2.0)
+//                .translatedBy(x: 0.0, y: 400.0)
+//                .inverted()
+            self.nickname.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+//            self.nickname.alpha = 0.0
+        }) { (success) in
+//            self.nickname.alpha = 1.0
+            self.nickname.transform = .identity
+            print("animation success: \(success)")
+        }
     }
     
 }
